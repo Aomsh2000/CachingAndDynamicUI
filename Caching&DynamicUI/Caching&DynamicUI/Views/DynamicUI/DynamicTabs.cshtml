@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "Dynamic Views with Tables";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Adjust this if you're using a different layout or no layout
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .tabs {
+        display: flex;
+        cursor: pointer;
+        padding: 10px;
+        background-color: #f0f0f0;
+    }
+
+    .tab {
+        padding: 10px 20px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        background-color: #e0e0e0;
+    }
+
+        .tab:hover {
+            background-color: #ccc;
+        }
+
+        .tab.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+    .content {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div class="tabs">
+    <div class="tab active" data-view="view1">All Todos</div>
+    <div class="tab" data-view="view2">Completed Todos</div>
+    <div class="tab" data-view="view3">Not Completed Todos</div>
+</div>
+
+<div id="content" class="content">
+    <!-- Dynamic content will be loaded here -->
+</div>
+<a class="btn btn-secondary mt-3" asp-controller="ToDo" asp-action="Index">⬅ Back</a>
+@section Scripts {
+    <script>
+        // Event listener for tab clicks
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const view = this.getAttribute('data-view');
+                loadContent(view);
+            });
+        });
+
+        function loadContent(view) {
+            fetch(`/api/view/${view}`) // Update to your actual API route
+                .then(response => response.json())
+                .then(data => {
+                    let tableHTML = generateTable(data);
+                    document.getElementById('content').innerHTML = tableHTML;
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                    document.getElementById('content').innerHTML = '<p>Error loading content.</p>';
+                });
+        }
+
+        function generateTable(data) {
+            if (data.length === 0) {
+                return '<p>No data available.</p>';
+            }
+
+            const headers = Object.keys(data[0]);
+            let tableHTML = '<table>';
+            tableHTML += '<thead><tr>';
+            headers.forEach(header => {
+                tableHTML += `<th>${header}</th>`;
+            });
+            tableHTML += '</tr></thead><tbody>';
+
+            data.forEach(item => {
+                tableHTML += '<tr>';
+                headers.forEach(header => {
+                    tableHTML += `<td>${item[header]}</td>`;
+                });
+                tableHTML += '</tr>';
+            });
+            tableHTML += '</tbody></table>';
+            return tableHTML;
+        }
+
+        // Initial load
+        loadContent('view1');
+    </script>
+}

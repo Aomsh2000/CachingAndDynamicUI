@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "ToDo Index";
+}
+
+<h2>ToDo Index</h2>
+
+<p>Select an option:</p>
+
+<div style="display: flex; gap: 1rem;">
+    <!-- This button will navigate to /todos (handled by TodosRedisController) -->
+    <a class="btn btn-primary" asp-controller="TodosRedis" asp-action="Index">View Redis Cache</a>
+    <a class="btn btn-primary" asp-controller="TodosMemory" asp-action="Index">View Memory Cache</a>
+    <a class="btn btn-primary" asp-controller="DynamicUI" asp-action="Index">View Dynamic UI</a>
+    <a class="btn btn-primary" asp-controller="Images" asp-action="Index">View Lazy Images</a>
+</div>

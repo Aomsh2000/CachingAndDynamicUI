@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Intersection Observer Lazy Gallery";
+}
+
+<h2>Lazy Loaded Image Gallery (via JS)</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+    @for (int i = 1; i <= 50; i++)
+    {
+        <div style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <img src="https://via.placeholder.com/200x300?text=Loading..."
+                 data-src="https://picsum.photos/id/@(i)/200/300"
+                 alt="Random Image @(i)"
+                 width="200"
+                 height="300"
+                 class="lazy-image"
+                 style="max-width: 100%;" />
+            <p>Image ID: @i</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const lazyImages = document.querySelectorAll("img.lazy-image");
+
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.getAttribute("data-src");
+                        img.removeAttribute("data-src");
+                        img.classList.remove("lazy-image");
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+        });
+    </script>
+}

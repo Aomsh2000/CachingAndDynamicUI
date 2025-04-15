@@ -1,0 +1,32 @@
+[
+  {
+    "ContainingType": "Caching_DynamicUI.Controllers.ViewController",
+    "Method": "GetView1Data",
+    "RelativePath": "api/View/view1",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Caching_DynamicUI.Controllers.ViewController",
+    "Method": "GetView2Data",
+    "RelativePath": "api/View/view2",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Caching_DynamicUI.Controllers.ViewController",
+    "Method": "GetView3Data",
+    "RelativePath": "api/View/view3",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
